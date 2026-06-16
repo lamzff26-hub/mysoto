@@ -1,0 +1,114 @@
+<?php
+
+namespace App\Filament\Pages;
+
+use App\Models\Setting;
+use App\Models\User;
+use BackedEnum;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Select;
+use Filament\Notifications\Notification;
+use Filament\Pages\Page;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
+use Illuminate\Support\Facades\Auth;
+
+/**
+ * Halaman setelan toko (admin). Di sinilah QRIS bisa diunggah/diganti kapan
+ * saja tanpa menyentuh kode — nilainya tersimpan di tabel settings.
+ */
+class Pengaturan extends Page
+{
+    protected string $view = 'filament.pages.pengaturan';
+
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCog6Tooth;
+
+    protected static string|\UnitEnum|null $navigationGroup = 'Pengaturan';
+
+    protected static ?string $title = 'Pengaturan Toko';
+
+    /** State form (di-bind lewat statePath('data')). */
+    public ?array $data = [];
+
+    /** Hanya admin yang boleh membuka halaman ini. */
+    public static function canAccess(): bool
+    {
+        /** @var User|null $user */
+        $user = Auth::user();
+
+        return (bool) $user?->isAdmin();
+    }
+
+    public function mount(): void
+    {
+        $this->form->fill([
+            'store_name' => Setting::get('store_name', 'MySoto'),
+            'store_address' => Setting::get('store_address', 'Alamat toko belum disetel'),
+            'store_logo' => Setting::get('store_logo'),
+            'qris_image' => Setting::get('qris_image'),
+        ]);
+    }
+
+    public function form(Schema $schema): Schema
+    {
+        return $schema
+            ->components([
+                Section::make('Identitas Toko')
+                    ->schema([
+                        TextInput::make('store_name')
+                            ->label('Nama Toko')
+                            ->maxLength(255),
+                        TextInput::make('store_address')
+                            ->label('Alamat Toko')
+                            ->maxLength(512)
+                            ->helperText('Alamat ini tampil di struk dan laporan toko.'),
+                        FileUpload::make('store_logo')
+                            ->label('Logo Toko (opsional)')
+                            ->image()
+                            ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
+                            ->directory('settings')
+                            ->disk('public')
+                            ->imagePreviewHeight('120')
+                            ->helperText('Logo akan tampil di bagian atas struk jika diunggah.')
+                            ->maxSize(4096),
+                    ]),
+
+                Section::make('Pembayaran QRIS')
+                    ->description('Unggah gambar QRIS toko Anda. Gambar ini akan ditampilkan di halaman kasir saat pelanggan memilih metode QRIS. Bisa diganti kapan saja.')
+                    ->schema([
+                        FileUpload::make('qris_image')
+                            ->label('Gambar QRIS')
+                            ->image()
+                            // Batasi ke raster aman; tolak SVG (bisa menyimpan skrip → XSS).
+                            ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
+                            ->directory('settings')
+                            ->disk('public')
+                            ->imagePreviewHeight('250')
+                            ->maxSize(4096),
+                    ]),
+            ])
+            ->statePath('data');
+    }
+
+    public function save(): void
+    {
+        $data = $this->form->getState();
+
+        Setting::set('store_name', $data['store_name'] ?? 'MySoto');
+        Setting::set('store_address', $data['store_address'] ?? null);
+        Setting::set('store_logo', $data['store_logo'] ?? null);
+        Setting::set('qris_image', $data['qris_image'] ?? null);
+
+        Notification::make()
+            ->title('Pengaturan tersimpan')
+            ->success()
+            ->send();
+    }
+
+    public function receiptSize()
+    {
+        return (int) Setting::get('receipt_size', 80);
+    }
+}
+

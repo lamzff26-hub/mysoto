@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 48" width="280" height="48">
+<defs>
+<linearGradient id="gradientTealDark" x1="0%" y1="0%" x2="100%" y2="100%">
+<stop offset="0%" style="stop-color:#5EEAD4;stop-opacity:1" />
+<stop offset="100%" style="stop-color:#7EE8C6;stop-opacity:1" />
+</linearGradient>
+</defs>
+
+<!-- Shopping Bag Icon -->
+<g transform="translate(4, 8)">
+<!-- Bag Body -->
+<rect x="2" y="8" width="20" height="18" rx="2" fill="none" stroke="url(#gradientTealDark)" stroke-width="2"/>
+<!-- Bag Handle -->
+<path d="M 6 8 Q 6 2 12 2 Q 18 2 18 8" fill="none" stroke="url(#gradientTealDark)" stroke-width="2" stroke-linecap="round"/>
+<!-- Dots inside -->
+<circle cx="7" cy="14" r="1.5" fill="url(#gradientTealDark)"/>
+<circle cx="17" cy="14" r="1.5" fill="url(#gradientTealDark)"/>
+<circle cx="12" cy="22" r="1.5" fill="url(#gradientTealDark)"/>
+</g>
+
+<!-- Text Logo - Light -->
+<text x="36" y="32" font-family="'Segoe UI', Arial, sans-serif" font-size="24" font-weight="700" fill="#F0F9F8" letter-spacing="-0.5">My<tspan fill="url(#gradientTealDark)">Soto</tspan></text>
+
+</svg>
