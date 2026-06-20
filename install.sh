@@ -10,7 +10,7 @@ set -e
 
 echo "╔════════════════════════════════════════════════════════════════╗"
 echo "║          🚀 Soto Laravel Installation Script                  ║"
-echo "║               Subdomain: soto.serviceacjombang.com             ║"
+echo "║               Deploying to: soto.lamzdev.my.id                ║"
 echo "╚════════════════════════════════════════════════════════════════╝"
 echo ""
 
@@ -23,11 +23,14 @@ NC='\033[0m' # No Color
 
 # Step 1: Copy environment file
 echo -e "${BLUE}[Step 1/8]${NC} Setting up environment file..."
-if [ -f ".env.production" ]; then
+if [ -f ".env.lamzdev" ]; then
+    cp .env.lamzdev .env
+    echo -e "${GREEN}✓${NC} .env file created from .env.lamzdev"
+elif [ -f ".env.production" ]; then
     cp .env.production .env
-    echo -e "${GREEN}✓${NC} .env file created"
+    echo -e "${GREEN}✓${NC} .env file created from .env.production"
 else
-    echo -e "${RED}✗${NC} .env.production not found!"
+    echo -e "${RED}✗${NC} No .env file found!"
     exit 1
 fi
 echo ""
