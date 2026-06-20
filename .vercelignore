@@ -1,34 +1,77 @@
-.env.example
-.env.local
-.env.*.local
-.git
+# Version control
+.git/
 .gitignore
-.env.testing
-.phpunit.result.cache
-bootstrap/cache/*
-storage/framework/cache/*
-storage/framework/sessions/*
-storage/framework/testing/*
-storage/logs/*
-node_modules
+.gitattributes
+
+# Environment files
+.env*
+!.env.example
+
+# Package managers
+node_modules/
+vendor/
 npm-debug.log
 yarn-error.log
+pnpm-lock.yaml
+yarn.lock
+package-lock.json
+
+# Build files
+dist/
+build/
+.next/
+.nuxt/
+
+# Cache & temporary files
+bootstrap/cache/
+storage/framework/cache/
+storage/framework/sessions/
+storage/framework/testing/
+storage/logs/
+.cache/
+.turbo/
+*.log
+
+# System files
 .DS_Store
 Thumbs.db
-*.DS_Store
-docker
-Dockerfile
-docker-compose.yml
+
+# IDE & Editor configs
+.vscode/
+.idea/
+*.iml
+*.iws
+*.ipr
 .editorconfig
+.prettierignore
+.prettierrc
+.eslintignore
+.eslintrc.cjs
 .styleci.yml
 phpstan.neon.dist
 pint.json
-.github
-.vscode
-.idea
-*.iml
-coverage
-docs
-tests
-laravel-echo-server.json
+
+# Docker
+docker/
+Dockerfile
+docker-compose.yml
+
+# CI/CD
+.github/
+
+# Testing
+tests/
+tests_old/
+.phpunit.result.cache
+coverage/
+
+# Documentation
+docs/
+README.md
+LICENSE
+VERCEL_DEPLOYMENT.md
+PRD_*
+
+# Misc
 Makefile
+laravel-echo-server.json

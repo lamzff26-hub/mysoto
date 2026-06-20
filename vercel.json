@@ -1,16 +1,6 @@
 {
-  "framework": "laravel",
-  "php": {
-    "version": "8.3"
-  },
-  "public": "public",
   "buildCommand": "npm run vercel-build",
-  "functions": {
-    "api/index.php": {
-      "memory": 3008,
-      "maxDuration": 30
-    }
-  },
+  "public": "public",
   "routes": [
     {
       "src": "^/storage/(.*)",
@@ -18,19 +8,7 @@
     },
     {
       "src": "^/(.*)$",
-      "dest": "/api/index.php"
+      "dest": "/api/index.js"
     }
-  ],
-  "env": {
-    "APP_NAME": "@APP_NAME",
-    "APP_ENV": "production",
-    "APP_DEBUG": "false",
-    "LOG_CHANNEL": "stderr",
-    "DB_CONNECTION": "@DB_CONNECTION",
-    "DB_HOST": "@DB_HOST",
-    "DB_PORT": "@DB_PORT",
-    "DB_DATABASE": "@DB_DATABASE",
-    "DB_USERNAME": "@DB_USERNAME",
-    "DB_PASSWORD": "@DB_PASSWORD"
-  }
+  ]
 }
