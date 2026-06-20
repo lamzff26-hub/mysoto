@@ -42,14 +42,27 @@ user@server [~]#
 ---
 
 ### ═══════════════════════════════════════════════════════════════
-### STEP 2: NAVIGATE KE FOLDER SUBDOMAIN (1 menit)
+### STEP 2: BUAT & MASUK FOLDER SUBDOMAIN (1 menit)
 ### ═══════════════════════════════════════════════════════════════
 
 **Setelah connected, jalankan:**
 
 ```bash
-cd public_html/soto.lamzdev.my.id
+cd public_html
+ls -la
 ```
+
+**Verify folder `soto.lamzdev.my.id` ada:**
+- Jika ada, masuk ke folder:
+  ```bash
+  cd soto.lamzdev.my.id
+  ```
+
+- Jika tidak ada, buat dulu:
+  ```bash
+  mkdir -p soto.lamzdev.my.id
+  cd soto.lamzdev.my.id
+  ```
 
 **Verify Anda di folder yang benar:**
 
@@ -62,49 +75,61 @@ pwd
 /home/username/public_html/soto.lamzdev.my.id
 ```
 
-**Jika tidak ada folder `/soto.lamzdev.my.id`:**
-1. Buat folder dulu:
-   ```bash
-   mkdir -p /home/username/public_html/soto.lamzdev.my.id
-   cd /home/username/public_html/soto.lamzdev.my.id
-   ```
+**Folder ini sekarang KOSONG - project akan clone langsung ke sini!**
 
 ---
 
 ### ═══════════════════════════════════════════════════════════════
-### STEP 3: CLONE PROJECT DARI GITHUB (3 menit)
+### STEP 3: CLONE PROJECT LANGSUNG KE FOLDER INI (3 menit)
 ### ═══════════════════════════════════════════════════════════════
 
-**Jalankan:**
+**PENTING: Pastikan Anda sudah di folder `/public_html/soto.lamzdev.my.id`**
+
+**Verify lokasi:**
+```bash
+pwd
+```
+(Output harus: `/home/username/public_html/soto.lamzdev.my.id`)
+
+**Jalankan clone dengan `.` (dot) - JANGAN LUPA DOT NYA!**
 
 ```bash
 git clone https://github.com/lamzff26-hub/mysoto.git .
 ```
 
+**Penjelasan:**
+- `https://github.com/lamzff26-hub/mysoto.git` = URL project
+- `.` (dot) = Clone langsung ke folder ini, jangan buat subfolder
+
 **Tunggu sampai selesai!** (ada output banyak tentang clone objects)
 
-**Setelah selesai, verify:**
+**Setelah selesai, verify file sudah ada di folder ini:**
 
 ```bash
 ls -la
 ```
 
-**Seharusnya ada folder & file:**
+**Seharusnya Anda lihat file & folder langsung di folder `/soto.lamzdev.my.id`:**
 ```
-app
-bootstrap
-config
-database
-public
-resources
-routes
-storage
+app/
+bootstrap/
+config/
+database/
+public/
+resources/
+routes/
+storage/
 .env.example
+.env.production
+.env.lamzdev
 composer.json
 package.json
 artisan
+install.sh
 ...
 ```
+
+✅ **TIDAK ADA subfolder `mysoto/` - semua file langsung di folder `/soto.lamzdev.my.id`**
 
 ---
 
@@ -232,29 +257,87 @@ https://soto.lamzdev.my.id/admin
 
 ## 📋 COPY-PASTE COMMAND LENGKAP (Jika mau langsung)
 
-**Jalankan semua sekaligus (pastikan sudah di folder yang benar):**
+**Pastikan Anda sudah di folder PARENT (public_html):**
 
 ```bash
-cd /home/username/public_html/soto.lamzdev.my.id && \
-git clone https://github.com/lamzff26-hub/mysoto.git . && \
-wget https://raw.githubusercontent.com/lamzff26-hub/mysoto/main/.env.lamzdev -O .env && \
-chmod -R 775 storage bootstrap/cache && \
-chmod -R 755 storage/app public && \
-mkdir -p storage/app/private storage/framework/cache storage/framework/sessions storage/logs && \
+cd public_html
+```
+
+**Jalankan command lengkap ini (sesuaikan `username` Anda):**
+
+```bash
+# Masuk/buat folder subdomain
+mkdir -p soto.lamzdev.my.id
+cd soto.lamzdev.my.id
+
+# Clone project (dengan DOT di akhir - PENTING!)
+git clone https://github.com/lamzff26-hub/mysoto.git .
+
+# Setup .env
+wget https://raw.githubusercontent.com/lamzff26-hub/mysoto/main/.env.lamzdev -O .env
+
+# Set permissions
+chmod -R 775 storage bootstrap/cache
+chmod -R 755 public storage/app
+mkdir -p storage/app/private storage/framework/cache storage/framework/sessions storage/logs
+
+# Run installer
 bash install.sh
+```
+
+**Atau dalam 1 baris (copy-paste semua):**
+
+```bash
+cd public_html && mkdir -p soto.lamzdev.my.id && cd soto.lamzdev.my.id && git clone https://github.com/lamzff26-hub/mysoto.git . && wget https://raw.githubusercontent.com/lamzff26-hub/mysoto/main/.env.lamzdev -O .env && chmod -R 775 storage bootstrap/cache && chmod -R 755 public storage/app && mkdir -p storage/app/private storage/framework/cache storage/framework/sessions storage/logs && bash install.sh
 ```
 
 ---
 
 ## 🆘 JIKA ADA ERROR
 
+### Error: Folder soto.lamzdev.my.id tidak kosong
+```bash
+# Hapus file & folder yang ada
+cd /home/username/public_html/soto.lamzdev.my.id
+rm -rf *
+
+# Atau buat folder baru
+cd public_html
+rm -rf soto.lamzdev.my.id
+mkdir -p soto.lamzdev.my.id
+cd soto.lamzdev.my.id
+
+# Clone lagi
+git clone https://github.com/lamzff26-hub/mysoto.git .
+```
+
+### Error: "fatal: destination path '.' already exists and is not an empty directory"
+- Folder sudah ada file
+- Hapus dulu file yang ada, atau gunakan folder kosong baru
+
+```bash
+# Opsi 1: Hapus file yang ada
+cd soto.lamzdev.my.id
+rm -rf *
+git clone https://github.com/lamzff26-hub/mysoto.git .
+
+# Opsi 2: Pindah ke folder baru
+cd public_html
+rm -rf soto.lamzdev.my.id
+mkdir soto.lamzdev.my.id
+cd soto.lamzdev.my.id
+git clone https://github.com/lamzff26-hub/mysoto.git .
+```
+
 ### Error: "bash: git: command not found"
 ```bash
 # Git tidak terinstall, gunakan wget instead:
+cd /home/username/public_html/soto.lamzdev.my.id
 wget https://github.com/lamzff26-hub/mysoto/archive/refs/heads/main.zip
 unzip main.zip
 mv mysoto-main/* .
-rm -rf mysoto-main main.zip
+rmdir mysoto-main
+rm main.zip
 ```
 
 ### Error: "bash: npm: command not found"
